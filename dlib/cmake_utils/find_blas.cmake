@@ -194,7 +194,7 @@ if (UNIX OR MINGW)
          # If you compiled OpenBLAS with LAPACK in it then it should have the
          # sgetrf_single function in it.  So if we find that function in
          # OpenBLAS then just use OpenBLAS's LAPACK. 
-         CHECK_FUNCTION_EXISTS(sgetrf_single OPENBLAS_HAS_LAPACK)
+         CHECK_FUNCTION_EXISTS(sgetrf_ OPENBLAS_HAS_LAPACK)
          if (OPENBLAS_HAS_LAPACK)
             message(STATUS "Using OpenBLAS's built in LAPACK")
             # set(lapack_libraries gfortran) 
