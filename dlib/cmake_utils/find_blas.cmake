@@ -29,10 +29,8 @@ SET(found_intel_mkl_headers 0)
 SET(lapack_with_underscore 0)
 SET(lapack_without_underscore 0)
 
-message(STATUS "Searching for BLAS and LAPACK")
-
 if (UNIX OR MINGW)
-   message(STATUS "Searching for BLAS and LAPACK")
+   message(STATUS "Searching for BLAS and LAPACK for Unix")
 
    if (BUILDING_MATLAB_MEX_FILE)
       # # This commented out stuff would link directly to MATLAB's built in
@@ -284,7 +282,7 @@ if (UNIX OR MINGW)
 
 
 elseif(WIN32 AND NOT MINGW)
-   message(STATUS "Searching for BLAS and LAPACK")
+   message(STATUS "Searching for BLAS and LAPACK for Windows")
 
    include(CheckTypeSize)
    check_type_size( "void*" SIZE_OF_VOID_PTR)
@@ -355,18 +353,26 @@ endif()
 
 # When all else fails use CMake's built in functions to find BLAS and LAPACK
 if (NOT blas_found)
-   find_package(BLAS QUIET)
-   if (${BLAS_FOUND})
+  if (OPENBLAS_LIBS)
+    set(cblas_lib ${OPENBLAS_LIBS})
+    set(blas_libraries ${cblas_lib})
+    set(blas_found 1)
+    message(STATUS "Found OpenBLAS library")
+    set(CMAKE_REQUIRED_LIBRARIES ${blas_libraries})
+  else()
+    find_package(BLAS QUIET)
+    if (${BLAS_FOUND})
       set(blas_libraries ${BLAS_LIBRARIES})      
       set(blas_found 1)
       if (NOT lapack_found)
-         find_package(LAPACK QUIET)
-         if (${LAPACK_FOUND})
-            set(lapack_libraries ${LAPACK_LIBRARIES})
-            set(lapack_found 1)
-         endif()
+        find_package(LAPACK QUIET)
+        if (${LAPACK_FOUND})
+          set(lapack_libraries ${LAPACK_LIBRARIES})
+          set(lapack_found 1)
+        endif()
       endif()
-   endif()
+    endif()
+  endif()
 endif()
 
 
