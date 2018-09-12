@@ -3,11 +3,7 @@ import mama, os
 class dlib(mama.BuildTarget):
     
     def dependencies(self):
-        ##
-        # Currently OpenBLAS only speeds up these platforms:
-        self.openblas = self.linux
-        if self.openblas:
-            self.add_git('OpenBLAS', 'https://github.com/RedFox20/OpenBLAS.git')
+        pass
 
     def configure(self):
         self.add_cmake_options(
