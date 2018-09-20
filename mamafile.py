@@ -21,9 +21,6 @@ class dlib(mama.BuildTarget):
         # macOS and iOS have Accelerate.framework
         if self.macos or self.ios:
             self.add_cmake_options('DLIB_USE_BLAS=ON')
-        elif self.openblas:
-            self.add_cmake_options('DLIB_USE_BLAS=ON')
-            self.inject_products('dlib', 'OpenBLAS', 'OPENBLAS_INCLUDE', 'OPENBLAS_LIBS')
         else:
             self.add_cmake_options('DLIB_USE_BLAS=OFF')
 
